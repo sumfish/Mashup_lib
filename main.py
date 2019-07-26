@@ -7,8 +7,8 @@ import time
 input_phrase='000821.wav'
 #input_path='./musicset/'
 #can_path='./musicset/'
-input_path='./hip-pop2u/'
-can_path='./hip-pop2u/'
+input_path='./hip-pop2/'
+can_path='./hip-pop2/'
 output_path='./output_audio/'
 
 def main():
@@ -21,7 +21,7 @@ def main():
             print('have existed dir')
                 
     print("----input-----")
-    input_chroma, input_spect, input_tempo = mas.chroma_and_spectral(input_path+input_phrase)
+    use, input_chroma, input_spect, input_tempo = mas.chroma_and_spectral(input_path+input_phrase)
     print("input tempo:{}".format(input_tempo))
     stable_rate = mas.harmonic_complex(input_chroma)
 

@@ -7,20 +7,22 @@ import soundfile as sf
 import pyrubberband as pyrb
 from pydub import AudioSegment #mix
 import librosa
+import mashability as mas
 
-input_path='../../hip-pop2u/'
-can_path='../../hip-pop2u/'
+input_path='../../hip-pop2/'
+can_path='../../hip-pop2/'
 can_output='ps_ts.wav'
+can_ps_output='ps.wav'
 output_path='./output_audio/'
 
 
 def generation(matched_wave, pitch, input_chroma, input_tempo, input_phrase):
     print("choose:{}".format(matched_wave))
     ## change dir to output_path in pitchShift()
-    y_shift=pitchShift(matched_wave, pitch, input_phrase)
+    pitchShift(matched_wave, pitch, input_phrase)
 
     print("---Generating time stretching file---")
-    timeStretch(y_shift, input_tempo)
+    timeStretch(input_tempo)
 
     print("---Generating volume adjust file(nor)---")
     volumeNor(input_phrase)
@@ -34,6 +36,7 @@ def pitchShift(loop, pitch, input_phrase):
     sf.write(loop, y, samplerate=44100) #original candidate
     # pitch shifting (maybe a little difference after shifting)
     y_shift = pyrb.pitch_shift(y, sr, n_steps=-pitch)
+    sf.write(can_ps_output, y_shift, samplerate=44100)
     #y_shift = librosa.effects.pitch_shift(y, sr, n_steps=pitch) #by liborsa
 
     '''
@@ -47,12 +50,10 @@ def pitchShift(loop, pitch, input_phrase):
     can_chroma24 =np.concatenate((beat_chroma,beat_chroma),axis=0)
     mas.harmonic(input_chroma,can_chroma24)
     '''
-    return y_shift
 
-def timeStretch(y_shift, input_tempo):
-    sr=44100
-    _, y_percussive = librosa.effects.hpss(y_shift)
-    y_tempo, _ = librosa.beat.beat_track(y=y_percussive,sr=sr)
+def timeStretch(input_tempo):
+    y_shift, sr = librosa.load(can_ps_output,sr=44100)
+    y_tempo=mas.get_tempo(can_ps_output)
     print("can_tempo:{}".format(y_tempo))
     rate =float(input_tempo)/y_tempo
     print("stretch_rate:{}".format(rate))
