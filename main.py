@@ -25,7 +25,7 @@ def main():
     print("input tempo:{}".format(input_tempo))
     stable_rate = mas.harmonic_complex(input_chroma)
 
-    '''
+    
     #dataset candidate
     print("----search candidate-----")
     V_mashability=0
@@ -45,11 +45,11 @@ def main():
     
     elapsed_time = time.time() - start_time
     print("pass time:"+time.strftime("%H:%M:%S", time.gmtime(elapsed_time)))
-    '''
+    
     # generation
     print("---Generating---")
-    gen.generation("000738.wav", 4, input_chroma, input_tempo, input_phrase)
-    #gen.generation(chosed_wave, pitch_shift, input_chroma, input_tempo, input_phrase)
+    #gen.generation("000738.wav", 4, input_chroma, input_tempo, input_phrase)
+    gen.generation(chosed_wave, pitch_shift, input_chroma, input_tempo, input_phrase)
     
 
 if __name__ == "__main__":
